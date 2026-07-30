@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="695" height="878" viewBox="0 0 695 878" role="img" aria-labelledby="title desc">
+  <title id="title">Gradient Brezel logo</title>
+  <desc id="desc">A scalable orange and gold gradient monogram on a transparent background.</desc>
+
+  <defs>
+    
+    <linearGradient id="baseGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF5A00"></stop>
+      <stop offset="42%" stop-color="#FF7A00"></stop>
+      <stop offset="72%" stop-color="#D94400"></stop>
+      <stop offset="100%" stop-color="#8F2208"></stop>
+    </linearGradient>
+
+    
+    <radialGradient id="centerGlow" cx="50%" cy="47%" r="47%">
+      <stop offset="0%" stop-color="#FFE978" stop-opacity="1"></stop>
+      <stop offset="22%" stop-color="#FFC13D" stop-opacity="0.92"></stop>
+      <stop offset="52%" stop-color="#FF8A16" stop-opacity="0.46"></stop>
+      <stop offset="100%" stop-color="#FF7A00" stop-opacity="0"></stop>
+    </radialGradient>
+
+    
+    <linearGradient id="softHighlight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.16"></stop>
+      <stop offset="45%" stop-color="#FFFFFF" stop-opacity="0"></stop>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.04"></stop>
+    </linearGradient>
+
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#6F1B00" flood-opacity="0.20"></feDropShadow>
+    </filter>
+
+    <path id="logoPath" fill-rule="evenodd" d="M 668 17 L 655 12 L 646 12 L 634 16 L 624 24 L 350 393 L 347 392 L 343 366 L 330 322 L 322 302 L 304 268 L 285 242 L 265 222 L 249 210 L 233 201 L 215 194 L 192 189 L 162 189 L 139 194 L 123 200 L 100 213 L 84 226 L 62 251 L 45 278 L 34 302 L 23 336 L 16 369 L 12 407 L 13 463 L 16 489 L 24 506 L 35 515 L 44 518 L 241 518 L 244 520 L 243 525 L 95 747 L 92 757 L 93 775 L 98 786 L 108 796 L 119 801 L 134 802 L 148 797 L 158 788 L 304 578 L 308 576 L 318 838 L 325 853 L 336 862 L 345 865 L 359 865 L 368 862 L 380 852 L 387 835 L 377 520 L 653 519 L 665 515 L 677 504 L 682 492 L 682 37 L 677 26 Z M 133 268 L 146 259 L 158 254 L 174 251 L 188 252 L 213 262 L 228 274 L 238 285 L 253 307 L 263 327 L 277 369 L 287 427 L 287 445 L 280 454 L 78 454 L 78 394 L 81 372 L 88 343 L 98 316 L 107 299 L 119 282 Z M 617 140 L 618 454 L 383 455 L 382 451 L 603 155 L 614 141 Z"></path>
+
+    <clipPath id="logoClip">
+      <use xlink:href="#logoPath"></use>
+    </clipPath>
+  </defs>
+
+  <g filter="url(#softShadow)">
+    <use xlink:href="#logoPath" fill="url(#baseGradient)"></use>
+    <rect x="0" y="0" width="695" height="878" fill="url(#centerGlow)" clip-path="url(#logoClip)"></rect>
+    <rect x="0" y="0" width="695" height="878" fill="url(#softHighlight)" clip-path="url(#logoClip)"></rect>
+  </g>
+</svg>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brezel — Ops intelligence for events</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#160F0A;color:#FBF7F1;font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:#F59B20;text-decoration:none}
+  a:hover{color:#EBBE06}
+  ::selection{background:#EBBE06;color:#1C120C}
+  @keyframes bzfloatA{0%,100%{transform:translateY(0) rotate(-.6deg)}50%{transform:translateY(-11px) rotate(.4deg)}}
+  @keyframes bzfloatB{0%,100%{transform:translateY(0) rotate(.5deg)}50%{transform:translateY(-8px) rotate(-.5deg)}}
+  @keyframes bzfloatC{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  @keyframes bzpulse{0%,100%{opacity:.5}50%{opacity:1}}
+  @keyframes bzdash{to{stroke-dashoffset:-16}}
+</style>
+</head>
+<body>
+<div id="brezelPage" style="min-height:100vh;color:#FBF7F1;background:radial-gradient(90% 60% at 80% 4%,rgba(235,190,6,.14),transparent 55%),radial-gradient(80% 55% at 8% 32%,rgba(204,55,1,.20),transparent 60%),radial-gradient(90% 60% at 92% 78%,rgba(245,99,0,.12),transparent 60%),linear-gradient(178deg,#1B120B 0%,#22140C 30%,#2C160B 55%,#1E120B 100%);background-attachment:fixed">
+
+  <div style="max-width:1240px;margin:0 auto;padding:0 40px">
+
+    <!-- NAV -->
+    <nav style="position:relative;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:26px 0">
+      <div style="display:flex;align-items:center;gap:12px">
+        <img src="uploads/brezel_logo_gradient_ready.svg" alt="Brezel" style="width:34px;height:34px;display:block">
+        <span style="font-family:'Bricolage Grotesque';font-weight:700;font-size:22px;letter-spacing:-.02em;color:#FBF7F1">Brezel</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:34px;font-size:15px;font-weight:500">
+        <a href="#how" style="color:#E9DECF">How it works</a>
+        <a href="#shift" style="color:#E9DECF">Why Brezel</a>
+        <a href="#features" style="color:#E9DECF">Features</a>
+        <a href="#" style="color:#E9DECF">Pricing</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px">
+        <a href="#" onclick="openSignin(event)" style="color:#E9DECF;font-size:15px;font-weight:600">Sign in</a>
+        <a href="#" onclick="showDemo(event)" style="color:#E9DECF;font-size:15px;font-weight:600">Book a demo</a>
+        <a href="#" onclick="openSignup(event)" style="background:#FBF7F1;color:#1C120C;padding:11px 20px;border-radius:10px;font-size:15px;font-weight:700">Sign up</a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- INTERACTIVE HERO STAGE -->
+  <div id="brezelStage" style="position:relative;max-width:1240px;margin:0 auto;height:660px;padding:0 40px">
+
+    <!-- connecting lines -->
+    <svg id="brezelLines" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:1;transition:opacity .6s ease" preserveAspectRatio="none">
+      <line data-ln stroke="rgba(245,166,35,.32)" stroke-width="1" stroke-dasharray="3 5" style="animation:bzdash 1.4s linear infinite"></line>
+      <line data-ln stroke="rgba(245,166,35,.32)" stroke-width="1" stroke-dasharray="3 5" style="animation:bzdash 1.4s linear infinite"></line>
+      <line data-ln stroke="rgba(245,166,35,.32)" stroke-width="1" stroke-dasharray="3 5" style="animation:bzdash 1.4s linear infinite"></line>
+      <line data-ln stroke="rgba(245,166,35,.32)" stroke-width="1" stroke-dasharray="3 5" style="animation:bzdash 1.4s linear infinite"></line>
+      <line data-ln stroke="rgba(245,166,35,.32)" stroke-width="1" stroke-dasharray="3 5" style="animation:bzdash 1.4s linear infinite"></line>
+      <line data-ln stroke="rgba(245,166,35,.32)" stroke-width="1" stroke-dasharray="3 5" style="animation:bzdash 1.4s linear infinite"></line>
+      <line data-ln stroke="rgba(245,166,35,.32)" stroke-width="1" stroke-dasharray="3 5" style="animation:bzdash 1.4s linear infinite"></line>
+      <line data-ln stroke="rgba(245,166,35,.32)" stroke-width="1" stroke-dasharray="3 5" style="animation:bzdash 1.4s linear infinite"></line>
+      <circle id="brezelHub" r="4" fill="#F59B20"></circle>
+    </svg>
+
+    <!-- floating source tiles -->
+    <div data-par="0.55" style="position:absolute;left:2%;top:15%;will-change:transform;z-index:3">
+      <div data-card style="animation:bzfloatA 7s ease-in-out infinite;cursor:grab;background:rgba(251,247,241,.06);border:1px solid rgba(251,247,241,.14);backdrop-filter:blur(6px);border-radius:14px;padding:13px 15px;min-width:158px;transition:box-shadow .25s,border-color .25s" style-hover="box-shadow:0 18px 40px -18px rgba(0,0,0,.6);border-color:rgba(245,166,35,.6)">
+        <div style="font-family:'Space Mono';font-size:10px;letter-spacing:.06em;color:#C9B48F">SRC · EVENTBRITE</div>
+        <div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;margin-top:4px">1,842</div>
+        <div style="font-size:12px;color:#8FCBA6">▲ 12% registered</div>
+      </div>
+    </div>
+    <div data-par="0.85" style="position:absolute;left:-1%;top:49%;will-change:transform;z-index:3">
+      <div data-card style="animation:bzfloatB 8.5s ease-in-out infinite;cursor:grab;background:rgba(251,247,241,.06);border:1px solid rgba(251,247,241,.14);backdrop-filter:blur(6px);border-radius:14px;padding:13px 15px;min-width:150px;transition:box-shadow .25s,border-color .25s" style-hover="box-shadow:0 18px 40px -18px rgba(0,0,0,.6);border-color:rgba(245,166,35,.6)">
+        <div style="font-family:'Space Mono';font-size:10px;letter-spacing:.06em;color:#C9B48F">SRC · QUICKBOOKS</div>
+        <div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;margin-top:4px">$204k</div>
+        <div style="font-size:12px;color:#C9B48F">68% of budget</div>
+      </div>
+    </div>
+    <div data-par="0.35" style="position:absolute;left:7%;top:75%;will-change:transform;z-index:3">
+      <div data-card style="animation:bzfloatC 9s ease-in-out infinite;cursor:grab;background:rgba(251,247,241,.06);border:1px solid rgba(251,247,241,.14);backdrop-filter:blur(6px);border-radius:14px;padding:13px 15px;min-width:140px;transition:box-shadow .25s,border-color .25s" style-hover="box-shadow:0 18px 40px -18px rgba(0,0,0,.6);border-color:rgba(245,166,35,.6)">
+        <div style="font-family:'Space Mono';font-size:10px;letter-spacing:.06em;color:#C9B48F">PACE</div>
+        <div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;margin-top:4px">▲ 12%</div>
+        <div style="font-size:12px;color:#C9B48F">this week</div>
+      </div>
+    </div>
+    <div data-par="0.28" style="position:absolute;left:40%;top:3%;will-change:transform;z-index:3">
+      <div data-card style="animation:bzfloatB 7.5s ease-in-out infinite;cursor:grab;background:rgba(251,247,241,.06);border:1px solid rgba(251,247,241,.14);backdrop-filter:blur(6px);border-radius:14px;padding:13px 15px;min-width:150px;transition:box-shadow .25s,border-color .25s" style-hover="box-shadow:0 18px 40px -18px rgba(0,0,0,.6);border-color:rgba(245,166,35,.6)">
+        <div style="font-family:'Space Mono';font-size:10px;letter-spacing:.06em;color:#C9B48F">SCHEDULE</div>
+        <div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;margin-top:4px">41 days</div>
+        <div style="font-size:12px;color:#C9B48F">to doors</div>
+      </div>
+    </div>
+    <div data-par="0.62" style="position:absolute;left:79%;top:14%;will-change:transform;z-index:3">
+      <div data-card style="animation:bzfloatA 8s ease-in-out infinite;cursor:grab;background:linear-gradient(135deg,rgba(245,155,32,.22),rgba(204,55,1,.22));border:1px solid rgba(245,166,35,.4);backdrop-filter:blur(6px);border-radius:14px;padding:13px 15px;min-width:150px;transition:box-shadow .25s,border-color .25s" style-hover="box-shadow:0 18px 40px -18px rgba(0,0,0,.6);border-color:rgba(245,166,35,.9)">
+        <div style="font-family:'Space Mono';font-size:10px;letter-spacing:.06em;color:#F3C89A">VENDORS</div>
+        <div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;margin-top:4px">3 at risk</div>
+        <div style="font-size:12px;color:#F3C89A">flagged today</div>
+      </div>
+    </div>
+    <div data-par="0.9" style="position:absolute;left:83%;top:47%;will-change:transform;z-index:3">
+      <div data-card style="animation:bzfloatC 9.5s ease-in-out infinite;cursor:grab;background:rgba(251,247,241,.06);border:1px solid rgba(251,247,241,.14);backdrop-filter:blur(6px);border-radius:14px;padding:13px 15px;min-width:150px;transition:box-shadow .25s,border-color .25s" style-hover="box-shadow:0 18px 40px -18px rgba(0,0,0,.6);border-color:rgba(245,166,35,.6)">
+        <div style="font-family:'Space Mono';font-size:10px;letter-spacing:.06em;color:#C9B48F">SRC · CVENT</div>
+        <div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;margin-top:4px">Hall B</div>
+        <div style="font-size:12px;color:#C9B48F">88% load</div>
+      </div>
+    </div>
+    <div data-par="0.45" style="position:absolute;left:75%;top:74%;will-change:transform;z-index:3">
+      <div data-card style="animation:bzfloatB 8s ease-in-out infinite;cursor:grab;background:rgba(251,247,241,.06);border:1px solid rgba(251,247,241,.14);backdrop-filter:blur(6px);border-radius:14px;padding:13px 15px;min-width:150px;transition:box-shadow .25s,border-color .25s" style-hover="box-shadow:0 18px 40px -18px rgba(0,0,0,.6);border-color:rgba(245,166,35,.6)">
+        <div style="font-family:'Space Mono';font-size:10px;letter-spacing:.06em;color:#C9B48F">GUEST LIST</div>
+        <div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;margin-top:4px">2,100</div>
+        <div style="font-size:12px;color:#C9B48F">invited</div>
+      </div>
+    </div>
+    <div data-par="0.5" style="position:absolute;left:45%;top:86%;will-change:transform;z-index:3">
+      <div data-card style="animation:bzfloatA 9s ease-in-out infinite;cursor:grab;background:rgba(251,247,241,.06);border:1px solid rgba(251,247,241,.14);backdrop-filter:blur(6px);border-radius:14px;padding:13px 15px;min-width:140px;transition:box-shadow .25s,border-color .25s" style-hover="box-shadow:0 18px 40px -18px rgba(0,0,0,.6);border-color:rgba(245,166,35,.6)">
+        <div style="font-family:'Space Mono';font-size:10px;letter-spacing:.06em;color:#C9B48F">VENUE</div>
+        <div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;margin-top:4px">88%</div>
+        <div style="font-size:12px;color:#C9B48F">capacity</div>
+      </div>
+    </div>
+
+    <!-- converged dashboard -->
+    <div id="brezelPanel" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.92);opacity:0;pointer-events:none;transition:opacity .6s ease .25s,transform .8s cubic-bezier(.2,.85,.25,1) .25s;width:392px;z-index:15;background:#fff;color:#1C120C;border:1px solid rgba(251,247,241,.25);border-radius:18px;box-shadow:0 50px 90px -40px rgba(0,0,0,.7);overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #F1E9DD;background:#FFFCF8">
+        <span style="font-family:'Bricolage Grotesque';font-weight:600;font-size:15px">Event pulse — TechSummit '26</span>
+        <span style="font-family:'Space Mono';font-size:10px;color:#CC3701;display:flex;align-items:center;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:#CC3701;animation:bzpulse 1.6s infinite"></span>LIVE</span>
+      </div>
+      <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px">
+        <div style="background:#FBF7F1;border:1px solid #F1E9DD;border-radius:11px;padding:11px"><div style="font-family:'Space Mono';font-size:9px;color:#9C8B7A">REGISTERED</div><div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:22px;margin-top:3px">1,842</div></div>
+        <div style="background:#FBF7F1;border:1px solid #F1E9DD;border-radius:11px;padding:11px"><div style="font-family:'Space Mono';font-size:9px;color:#9C8B7A">BUDGET</div><div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:22px;margin-top:3px">68%</div></div>
+        <div style="background:linear-gradient(135deg,#F59B20,#CC3701);color:#fff;border-radius:11px;padding:11px"><div style="font-family:'Space Mono';font-size:9px;opacity:.85">AT RISK</div><div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:22px;margin-top:3px">3</div></div>
+      </div>
+      <div style="padding:0 16px 16px"><div style="background:#FBF7F1;border:1px solid #F1E9DD;border-radius:11px;padding:12px 13px">
+        <div style="display:flex;justify-content:space-between;font-family:'Space Mono';font-size:9px;color:#9C8B7A;margin-bottom:9px"><span>REGISTRATION CURVE</span><span>90 DAYS</span></div>
+        <div style="display:flex;align-items:flex-end;gap:4px;height:52px">
+          <div style="flex:1;height:22%;background:#F3D9A8;border-radius:2px"></div><div style="flex:1;height:31%;background:#F3D9A8;border-radius:2px"></div><div style="flex:1;height:28%;background:#F3D9A8;border-radius:2px"></div><div style="flex:1;height:46%;background:#F5A623;border-radius:2px"></div><div style="flex:1;height:54%;background:#F5A623;border-radius:2px"></div><div style="flex:1;height:49%;background:#F5A623;border-radius:2px"></div><div style="flex:1;height:68%;background:#F46300;border-radius:2px"></div><div style="flex:1;height:80%;background:#F46300;border-radius:2px"></div><div style="flex:1;height:100%;background:#CC3701;border-radius:2px"></div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- center headline -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(640px,72%);text-align:center;z-index:20;pointer-events:none">
+      <div id="brezelHeadWrap" style="transition:opacity .5s ease,transform .5s ease">
+        <div style="display:inline-flex;align-items:center;gap:9px;font-family:'Space Mono';font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#EBBE06;background:rgba(235,190,6,.1);border:1px solid rgba(235,190,6,.28);padding:7px 13px;border-radius:100px">
+          <span style="width:7px;height:7px;border-radius:50%;background:#F59B20;display:inline-block;animation:bzpulse 1.8s infinite"></span>Ops intelligence for events
+        </div>
+        <h1 style="font-family:'Bricolage Grotesque';font-weight:700;font-size:56px;line-height:1.02;letter-spacing:-.03em;margin:20px 0 0;text-wrap:balance">Every number your event runs on, in one living view.</h1>
+      </div>
+      <p id="brezelSub" style="font-size:17px;line-height:1.55;color:#D8CBB9;margin:20px auto 0;max-width:440px;transition:opacity .5s ease">Registrations, budget, vendors, venue — scattered across tools, threaded together. Watch Brezel pull them into one.</p>
+      <div style="display:flex;gap:13px;justify-content:center;margin-top:28px;pointer-events:auto">
+        <button onclick="toggleStage()" style="background:#CC3701;color:#fff;padding:15px 26px;border-radius:12px;font-size:16px;font-weight:700;border:none;cursor:pointer;box-shadow:0 12px 28px -12px rgba(204,55,1,.8);font-family:'Hanken Grotesk'"><span id="brezelBtnLabel">Watch it synthesize →</span></button>
+        <a href="#how" style="background:rgba(251,247,241,.08);color:#FBF7F1;padding:15px 26px;border-radius:12px;font-size:16px;font-weight:600;border:1px solid rgba(251,247,241,.2)">See how it works</a>
+      </div>
+      <div style="font-family:'Space Mono';font-size:11px;color:#8A7A6C;margin-top:20px;letter-spacing:.02em">DRAG THE CARDS · MOVE YOUR CURSOR</div>
+    </div>
+
+  </div>
+
+  <div style="max-width:1240px;margin:0 auto;padding:0 40px">
+
+    <!-- TRUST -->
+    <section style="padding:56px 0 20px">
+      <div style="font-family:'Space Mono';font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#A2937F;text-align:center;margin-bottom:22px">Powering planning teams behind</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;opacity:.5;font-family:'Bricolage Grotesque';font-weight:700;font-size:21px;letter-spacing:-.02em;color:#F1E7D8">
+        <span>Northwind Expo</span><span>Atlas Summits</span><span>Meridian Live</span><span>Cadence Group</span><span>Foundry Events</span>
+      </div>
+    </section>
+
+    <!-- PAIN -> SOLUTION animated band -->
+    <section id="shift" data-reveal style="padding:78px 0 40px;opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)">
+      <div style="text-align:center;max-width:640px;margin:0 auto 46px">
+        <div style="font-family:'Space Mono';font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#F59B20;margin-bottom:14px">Why Brezel</div>
+        <h2 style="font-family:'Bricolage Grotesque';font-weight:700;font-size:42px;line-height:1.06;letter-spacing:-.025em">The night-before scramble, turned into a live view.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 88px 1fr;align-items:center;gap:8px">
+        <!-- PAIN -->
+        <div id="shiftPain" style="background:rgba(251,247,241,.05);border:1px solid rgba(245,120,60,.22);border-radius:20px;padding:30px;transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+            <span style="font-family:'Space Mono';font-size:11px;letter-spacing:.05em;color:#E88C6A">BEFORE BREZEL</span>
+            <span style="font-family:'Space Mono';font-size:10px;color:#E36B4A;border:1px solid rgba(227,107,74,.4);border-radius:100px;padding:3px 9px">MANUAL</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div data-pain-row style="display:flex;align-items:center;justify-content:space-between;background:rgba(251,247,241,.04);border:1px solid rgba(251,247,241,.1);border-radius:10px;padding:11px 13px;transition:all .5s ease"><span style="font-size:14px;color:#D8CBB9">budget_v7_FINAL.xlsx</span><span style="font-family:'Space Mono';font-size:11px;color:#9C8B7A">stale</span></div>
+            <div data-pain-row style="display:flex;align-items:center;justify-content:space-between;background:rgba(251,247,241,.04);border:1px solid rgba(251,247,241,.1);border-radius:10px;padding:11px 13px;transition:all .5s ease"><span style="font-size:14px;color:#D8CBB9">6 browser tabs open</span><span style="font-family:'Space Mono';font-size:11px;color:#9C8B7A">who's right?</span></div>
+            <div data-pain-row style="display:flex;align-items:center;justify-content:space-between;background:rgba(251,247,241,.04);border:1px solid rgba(251,247,241,.1);border-radius:10px;padding:11px 13px;transition:all .5s ease"><span style="font-size:14px;color:#D8CBB9">vendor PDFs in email</span><span style="font-family:'Space Mono';font-size:11px;color:#9C8B7A">unread</span></div>
+            <div data-pain-row style="display:flex;align-items:center;justify-content:space-between;background:rgba(251,247,241,.04);border:1px solid rgba(251,247,241,.1);border-radius:10px;padding:11px 13px;transition:all .5s ease"><span style="font-size:14px;color:#D8CBB9">Slack thread re: headcount</span><span style="font-family:'Space Mono';font-size:11px;color:#9C8B7A">+42 msgs</span></div>
+          </div>
+        </div>
+        <!-- arrow -->
+        <svg viewBox="0 0 88 40" style="width:88px;height:40px;overflow:visible">
+          <path id="shiftArrow" d="M6 20 H74" fill="none" stroke="#F59B20" stroke-width="2" stroke-linecap="round" stroke-dasharray="80" stroke-dashoffset="80" style="transition:stroke-dashoffset .8s ease .5s"></path>
+          <path id="shiftArrowHead" d="M66 12 L78 20 L66 28" fill="none" stroke="#F59B20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0" style="transition:opacity .3s ease 1.2s"></path>
+        </svg>
+        <!-- SOLUTION -->
+        <div id="shiftSol" style="opacity:0;transform:scale(.92) translateX(18px);background:rgba(251,247,241,.06);border:1px solid rgba(245,166,35,.4);border-radius:20px;padding:30px;box-shadow:0 40px 80px -50px rgba(0,0,0,.7);transition:opacity .7s ease .55s,transform .7s cubic-bezier(.2,.85,.25,1) .55s">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+            <span style="font-family:'Space Mono';font-size:11px;letter-spacing:.05em;color:#EBBE06">ON BREZEL</span>
+            <span style="font-family:'Space Mono';font-size:10px;color:#8FCBA6;display:flex;align-items:center;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:#8FCBA6;animation:bzpulse 1.6s infinite"></span>LIVE</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:12px">
+            <div style="background:rgba(251,247,241,.05);border:1px solid rgba(251,247,241,.12);border-radius:11px;padding:11px"><div style="font-family:'Space Mono';font-size:9px;color:#C9B48F">REGISTERED</div><div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:22px;margin-top:3px">1,842</div></div>
+            <div style="background:rgba(251,247,241,.05);border:1px solid rgba(251,247,241,.12);border-radius:11px;padding:11px"><div style="font-family:'Space Mono';font-size:9px;color:#C9B48F">BUDGET</div><div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:22px;margin-top:3px">68%</div></div>
+            <div style="background:linear-gradient(135deg,#F59B20,#CC3701);border-radius:11px;padding:11px"><div style="font-family:'Space Mono';font-size:9px;opacity:.9">AT RISK</div><div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:22px;margin-top:3px">3</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13.5px;color:#E9DECF"><span style="width:18px;height:18px;border-radius:50%;background:#1F9254;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px">✓</span>One live source of truth</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" data-reveal style="padding:70px 0 40px;opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)">
+      <div style="max-width:640px">
+        <div style="font-family:'Space Mono';font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#F59B20;margin-bottom:14px">How it works</div>
+        <h2 style="font-family:'Bricolage Grotesque';font-weight:700;font-size:42px;line-height:1.06;letter-spacing:-.025em">From scattered tools to one decision surface, in three moves.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:46px">
+        <div style="background:rgba(251,247,241,.05);border:1px solid rgba(251,247,241,.12);backdrop-filter:blur(6px);border-radius:16px;padding:26px">
+          <div style="font-family:'Space Mono';font-size:13px;color:#F59B20;font-weight:700">01</div>
+          <h3 style="font-family:'Bricolage Grotesque';font-weight:600;font-size:22px;margin:14px 0 8px;letter-spacing:-.01em">Connect</h3>
+          <p style="font-size:15.5px;line-height:1.55;color:#C9B48F">Link registration, ticketing, finance, and vendor systems. Brezel maps them to a shared event schema automatically.</p>
+        </div>
+        <div style="background:rgba(251,247,241,.05);border:1px solid rgba(251,247,241,.12);backdrop-filter:blur(6px);border-radius:16px;padding:26px">
+          <div style="font-family:'Space Mono';font-size:13px;color:#F59B20;font-weight:700">02</div>
+          <h3 style="font-family:'Bricolage Grotesque';font-weight:600;font-size:22px;margin:14px 0 8px;letter-spacing:-.01em">Synthesize</h3>
+          <p style="font-size:15.5px;line-height:1.55;color:#C9B48F">Live metrics, variance alerts, and forecasts are computed across every source — no exports, no reconciling spreadsheets.</p>
+        </div>
+        <div style="background:rgba(251,247,241,.05);border:1px solid rgba(251,247,241,.12);backdrop-filter:blur(6px);border-radius:16px;padding:26px">
+          <div style="font-family:'Space Mono';font-size:13px;color:#F59B20;font-weight:700">03</div>
+          <h3 style="font-family:'Bricolage Grotesque';font-weight:600;font-size:22px;margin:14px 0 8px;letter-spacing:-.01em">Decide</h3>
+          <p style="font-size:15.5px;line-height:1.55;color:#C9B48F">Share a single live view with stakeholders and act on what's changing — with the context behind every number.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" data-reveal style="padding:64px 0;opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
+        <div style="background:rgba(251,247,241,.05);border:1px solid rgba(251,247,241,.12);backdrop-filter:blur(6px);border-radius:20px;padding:32px">
+          <h3 style="font-family:'Bricolage Grotesque';font-weight:600;font-size:24px;letter-spacing:-.01em">Variance alerts</h3>
+          <p style="font-size:15.5px;line-height:1.55;color:#C9B48F;margin-top:10px">Get pinged the moment spend, pace, or headcount drifts from plan — with the driver already identified.</p>
+        </div>
+        <div style="background:rgba(251,247,241,.05);border:1px solid rgba(251,247,241,.12);backdrop-filter:blur(6px);border-radius:20px;padding:32px">
+          <h3 style="font-family:'Bricolage Grotesque';font-weight:600;font-size:24px;letter-spacing:-.01em">Forecast to the door</h3>
+          <p style="font-size:15.5px;line-height:1.55;color:#C9B48F;margin-top:10px">Registration and revenue projections that tighten as the date nears, so you commit numbers with confidence.</p>
+        </div>
+        <div style="background:rgba(251,247,241,.05);border:1px solid rgba(251,247,241,.12);backdrop-filter:blur(6px);border-radius:20px;padding:32px">
+          <h3 style="font-family:'Bricolage Grotesque';font-weight:600;font-size:24px;letter-spacing:-.01em">One live view to share</h3>
+          <p style="font-size:15.5px;line-height:1.55;color:#C9B48F;margin-top:10px">Send stakeholders a single link that stays current — no more exporting decks the night before.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- METRIC BAND (no color block) -->
+    <section id="data" data-reveal style="padding:40px 0 64px;border-top:1px solid rgba(251,247,241,.12);border-bottom:1px solid rgba(251,247,241,.12);display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:28px;align-items:center;opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)">
+      <div>
+        <div style="font-family:'Space Mono';font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#F59B20;margin-bottom:10px">By the numbers</div>
+        <h3 style="font-family:'Bricolage Grotesque';font-weight:700;font-size:28px;line-height:1.1;letter-spacing:-.02em">Planners run tighter events on Brezel.</h3>
+      </div>
+      <div><div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:46px;letter-spacing:-.02em;background:linear-gradient(120deg,#EBBE06,#F46300);-webkit-background-clip:text;background-clip:text;color:transparent">9hrs</div><div style="font-size:14px;color:#C9B48F;margin-top:4px">saved per event on reporting</div></div>
+      <div><div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:46px;letter-spacing:-.02em;background:linear-gradient(120deg,#EBBE06,#F46300);-webkit-background-clip:text;background-clip:text;color:transparent">6+</div><div style="font-size:14px;color:#C9B48F;margin-top:4px">tools consolidated</div></div>
+      <div><div style="font-family:'Bricolage Grotesque';font-weight:700;font-size:46px;letter-spacing:-.02em;background:linear-gradient(120deg,#EBBE06,#F46300);-webkit-background-clip:text;background-clip:text;color:transparent">98%</div><div style="font-size:14px;color:#C9B48F;margin-top:4px">budget accuracy at close</div></div>
+    </section>
+
+    <!-- CTA -->
+    <section id="cta" data-reveal style="text-align:center;padding:40px 0 96px;opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)">
+      <img src="uploads/brezel_logo_gradient_ready.svg" alt="" style="width:52px;height:52px;margin-bottom:20px">
+      <h2 style="font-family:'Bricolage Grotesque';font-weight:700;font-size:44px;line-height:1.05;letter-spacing:-.025em;max-width:640px;margin:0 auto;text-wrap:balance">See your next event in a single view.</h2>
+      <p style="font-size:18px;color:#C9B48F;margin:18px auto 0;max-width:480px">Book a 20-minute walkthrough with your own data connected.</p>
+      <div style="display:flex;gap:14px;justify-content:center;margin-top:30px">
+        <a href="#" onclick="openSignup(event)" style="background:#CC3701;color:#fff;padding:16px 30px;border-radius:12px;font-size:16px;font-weight:700;box-shadow:0 12px 28px -12px rgba(204,55,1,.7)">Sign up</a>
+        <a href="#" onclick="showDemo(event)" style="background:rgba(251,247,241,.08);color:#FBF7F1;padding:16px 30px;border-radius:12px;font-size:16px;font-weight:600;border:1px solid rgba(251,247,241,.2)">Book a demo</a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="border-top:1px solid rgba(251,247,241,.12);padding:40px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px">
+      <div style="display:flex;align-items:center;gap:11px">
+        <img src="uploads/brezel_logo_gradient_ready.svg" alt="" style="width:28px;height:28px">
+        <span style="font-family:'Bricolage Grotesque';font-weight:700;font-size:18px;letter-spacing:-.02em">Brezel</span>
+      </div>
+      <div style="display:flex;gap:26px;font-size:14.5px;color:#C9B48F">
+        <a href="#" style="color:#C9B48F">Product</a><a href="#" style="color:#C9B48F">Security</a><a href="#" style="color:#C9B48F">Docs</a><a href="#" style="color:#C9B48F">Careers</a>
+      </div>
+      <div style="font-family:'Space Mono';font-size:12px;color:#A2937F">© 2026 Brezel, Inc.</div>
+    </footer>
+
+  </div>
+</div>
+
+<!-- SIGN UP / DEMO MODAL -->
+  <div id="bzOverlay" onclick="if(event.target===this) closeModal()" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(22,15,10,.72);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px">
+    <div id="bzModalCard" style="width:100%;max-width:400px;background:#FFFCF8;color:#1C120C;border-radius:18px;box-shadow:0 50px 90px -30px rgba(0,0,0,.6);overflow:hidden;position:relative">
+      <button onclick="closeModal()" aria-label="Close" style="position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;border:none;background:rgba(28,18,12,.06);color:#1C120C;font-size:16px;cursor:pointer;line-height:1">✕</button>
+      <div id="bzModalBody" style="padding:32px 28px 28px"></div>
+    </div>
+  </div>
+
+<script>
+  // ---------- Hero stage: parallax, drag, scroll reveal, converge toggle ----------
+  (function () {
+    const stage = document.getElementById('brezelStage');
+    if (!stage) return;
+
+    const pars = Array.from(stage.querySelectorAll('[data-par]'));
+    const cards = Array.from(stage.querySelectorAll('[data-card]'));
+    cards.forEach((c) => { c._floatAnim = c.style.animation; });
+    const lines = Array.from(stage.querySelectorAll('#brezelLines [data-ln]'));
+    const svg = document.getElementById('brezelLines');
+    const hub = document.getElementById('brezelHub');
+
+    const target = { x: 0, y: 0 };
+    const cur = { x: 0, y: 0 };
+    stage.addEventListener('mousemove', (e) => {
+      const r = stage.getBoundingClientRect();
+      target.x = (e.clientX - r.left) / r.width - 0.5;
+      target.y = (e.clientY - r.top) / r.height - 0.5;
+    });
+    stage.addEventListener('mouseleave', () => { target.x = 0; target.y = 0; });
+
+    function loop() {
+      cur.x += (target.x - cur.x) * 0.06;
+      cur.y += (target.y - cur.y) * 0.06;
+      for (const p of pars) {
+        const d = parseFloat(p.getAttribute('data-par')) || 0.4;
+        p.style.transform = `translate3d(${(-cur.x * d * 46).toFixed(2)}px,${(-cur.y * d * 46).toFixed(2)}px,0)`;
+      }
+      const sr = stage.getBoundingClientRect();
+      const cx = sr.width / 2, cy = sr.height / 2;
+      if (hub) { hub.setAttribute('cx', cx); hub.setAttribute('cy', cy); }
+      for (let i = 0; i < lines.length; i++) {
+        const card = cards[i];
+        if (!card) continue;
+        const cr = card.getBoundingClientRect();
+        const tx = cr.left - sr.left + cr.width / 2;
+        const ty = cr.top - sr.top + cr.height / 2;
+        const ln = lines[i];
+        ln.setAttribute('x1', cx); ln.setAttribute('y1', cy);
+        ln.setAttribute('x2', tx); ln.setAttribute('y2', ty);
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+    let converged = false;
+
+    for (const card of cards) {
+      card.dataset.dx = 0; card.dataset.dy = 0;
+      card.addEventListener('pointerdown', (e) => {
+        if (converged) return;
+        e.preventDefault();
+        card.setPointerCapture(e.pointerId);
+        card.style.animation = 'none';
+        card.style.transition = 'none';
+        card.style.cursor = 'grabbing';
+        card.style.zIndex = 25;
+        const sx = e.clientX, sy = e.clientY;
+        const ox = parseFloat(card.dataset.dx) || 0, oy = parseFloat(card.dataset.dy) || 0;
+        const move = (ev) => {
+          const nx = ox + (ev.clientX - sx), ny = oy + (ev.clientY - sy);
+          card.dataset.dx = nx; card.dataset.dy = ny;
+          card.style.transform = `translate(${nx}px,${ny}px)`;
+        };
+        const up = () => {
+          card.style.cursor = 'grab';
+          window.removeEventListener('pointermove', move);
+          window.removeEventListener('pointerup', up);
+        };
+        window.addEventListener('pointermove', move);
+        window.addEventListener('pointerup', up);
+      });
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      for (const en of entries) {
+        if (en.isIntersecting) {
+          en.target.style.opacity = '1';
+          en.target.style.transform = 'translateY(0)';
+          if (en.target.id === 'shift') playShift();
+          io.unobserve(en.target);
+        }
+      }
+    }, { threshold: 0.16 });
+    document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+
+    function playShift() {
+      const pain = document.getElementById('shiftPain');
+      const sol = document.getElementById('shiftSol');
+      const arrow = document.getElementById('shiftArrow');
+      const head = document.getElementById('shiftArrowHead');
+      setTimeout(() => {
+        const rows = pain ? pain.querySelectorAll('[data-pain-row]') : [];
+        rows.forEach((r, i) => setTimeout(() => {
+          r.style.opacity = '0.4';
+          r.style.transform = 'translateX(-8px)';
+          r.style.textDecoration = 'line-through';
+        }, i * 120));
+        if (pain) { pain.style.opacity = '0.6'; }
+        if (arrow) arrow.style.strokeDashoffset = '0';
+        if (head) head.style.opacity = '1';
+        if (sol) { sol.style.opacity = '1'; sol.style.transform = 'scale(1) translateX(0)'; }
+      }, 700);
+    }
+
+    window.toggleStage = function () {
+      const panel = document.getElementById('brezelPanel');
+      const sub = document.getElementById('brezelSub');
+      const head = document.getElementById('brezelHeadWrap');
+      const label = document.getElementById('brezelBtnLabel');
+      const sr = stage.getBoundingClientRect();
+      const cx = sr.left + sr.width / 2, cy = sr.top + sr.height / 2;
+      converged = !converged;
+
+      if (converged) {
+        for (const card of cards) {
+          const cr = card.getBoundingClientRect();
+          const tx = (cx - (cr.left + cr.width / 2)) * 0.86;
+          const ty = (cy - (cr.top + cr.height / 2)) * 0.86;
+          card.style.transition = 'transform .9s cubic-bezier(.3,.85,.25,1), opacity .7s ease';
+          card.style.animation = 'none';
+          card.style.transform = `translate(${tx}px,${ty}px) scale(.28)`;
+          card.style.opacity = '0';
+          card.parentElement.style.pointerEvents = 'none';
+        }
+        if (svg) svg.style.opacity = '0';
+        panel.style.opacity = '1';
+        panel.style.transform = 'translate(-50%,-50%) scale(1)';
+        panel.style.pointerEvents = 'auto';
+        if (head) { head.style.opacity = '0.16'; head.style.transform = 'translateY(-118px) scale(.92)'; }
+        if (sub) sub.style.opacity = '0';
+        if (label) label.textContent = 'Scatter the sources ↺';
+      } else {
+        for (const card of cards) {
+          const dragged = (parseFloat(card.dataset.dx) || 0) !== 0 || (parseFloat(card.dataset.dy) || 0) !== 0;
+          card.style.transition = 'transform .8s cubic-bezier(.2,.8,.2,1), opacity .6s ease';
+          card.style.transform = `translate(${card.dataset.dx || 0}px,${card.dataset.dy || 0}px)`;
+          card.style.opacity = '1';
+          card.parentElement.style.pointerEvents = '';
+          setTimeout(() => { if (!converged && !dragged) card.style.animation = card._floatAnim; }, 860);
+        }
+        if (svg) svg.style.opacity = '1';
+        panel.style.opacity = '0';
+        panel.style.transform = 'translate(-50%,-50%) scale(.92)';
+        panel.style.pointerEvents = 'none';
+        if (head) { head.style.opacity = '1'; head.style.transform = 'translateY(0) scale(1)'; }
+        if (sub) sub.style.opacity = '1';
+        if (label) label.textContent = 'Watch it synthesize →';
+      }
+    };
+  })();
+
+  // ---------- Sign up + Demo modal ----------
+  const bzOverlay = document.getElementById('bzOverlay');
+  const bzBody = document.getElementById('bzModalBody');
+
+  function closeModal() {
+    bzOverlay.style.display = 'none';
+  }
+  window.closeModal = closeModal;
+
+  window.openSignup = function (event) {
+    if (event) event.preventDefault();
+    bzBody.innerHTML = `
+      <div style="font-family:'Space Mono';font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#CC3701;margin-bottom:6px">Get started</div>
+      <h3 style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;letter-spacing:-.02em;margin-bottom:6px">Create your account</h3>
+      <p style="font-size:14px;color:#6B5C4C;margin-bottom:20px">Join the planners running tighter events on Brezel.</p>
+      <form id="bzSignupForm" onsubmit="submitSignup(event)">
+        <label style="display:block;font-size:12.5px;font-weight:600;color:#3A2E22;margin-bottom:5px">Name</label>
+        <input required name="name" type="text" placeholder="Ada Lovelace" style="width:100%;padding:11px 13px;border:1px solid #E7DCCB;border-radius:9px;font-size:14.5px;font-family:'Hanken Grotesk';margin-bottom:14px;background:#fff;color:#1C120C">
+        <label style="display:block;font-size:12.5px;font-weight:600;color:#3A2E22;margin-bottom:5px">Email</label>
+        <input required name="email" type="email" placeholder="ada@example.com" style="width:100%;padding:11px 13px;border:1px solid #E7DCCB;border-radius:9px;font-size:14.5px;font-family:'Hanken Grotesk';margin-bottom:18px;background:#fff;color:#1C120C">
+        <button type="submit" id="bzSignupSubmit" style="width:100%;background:#CC3701;color:#fff;padding:13px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Hanken Grotesk'">Sign up</button>
+        <div id="bzSignupError" style="display:none;color:#CC3701;font-size:13px;margin-top:10px"></div>
+      </form>
+    `;
+    bzOverlay.style.display = 'flex';
+  };
+
+  window.submitSignup = async function (event) {
+    event.preventDefault();
+    const form = event.target;
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const btn = document.getElementById('bzSignupSubmit');
+    const errBox = document.getElementById('bzSignupError');
+    errBox.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Signing up…';
+    try {
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+      bzBody.innerHTML = `
+        <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#F59B20,#CC3701);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin-bottom:16px">✓</div>
+        <h3 style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;letter-spacing:-.02em;margin-bottom:10px">You're in!</h3>
+        <p style="font-size:15px;line-height:1.55;color:#3A2E22">${data.message}</p>
+        <button onclick="closeModal()" style="margin-top:20px;width:100%;background:#1C120C;color:#fff;padding:12px;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:'Hanken Grotesk'">Close</button>
+      `;
+    } catch (err) {
+      errBox.textContent = err.message;
+      errBox.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Sign up';
+    }
+  };
+
+  window.openSignin = function (event) {
+    if (event) event.preventDefault();
+    bzBody.innerHTML = `
+      <div style="font-family:'Space Mono';font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#CC3701;margin-bottom:6px">Welcome back</div>
+      <h3 style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;letter-spacing:-.02em;margin-bottom:6px">Sign in</h3>
+      <p style="font-size:14px;color:#6B5C4C;margin-bottom:20px">Enter the email you signed up with.</p>
+      <form id="bzSigninForm" onsubmit="submitSignin(event)">
+        <label style="display:block;font-size:12.5px;font-weight:600;color:#3A2E22;margin-bottom:5px">Email</label>
+        <input required name="email" type="email" placeholder="ada@example.com" style="width:100%;padding:11px 13px;border:1px solid #E7DCCB;border-radius:9px;font-size:14.5px;font-family:'Hanken Grotesk';margin-bottom:18px;background:#fff;color:#1C120C">
+        <button type="submit" id="bzSigninSubmit" style="width:100%;background:#CC3701;color:#fff;padding:13px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Hanken Grotesk'">Sign in</button>
+        <div id="bzSigninError" style="display:none;color:#CC3701;font-size:13px;margin-top:10px"></div>
+      </form>
+      <p style="font-size:13px;color:#6B5C4C;margin-top:16px;text-align:center">No account yet? <a href="#" onclick="openSignup(event)" style="color:#CC3701;font-weight:600">Sign up</a></p>
+    `;
+    bzOverlay.style.display = 'flex';
+  };
+
+  window.submitSignin = async function (event) {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value.trim();
+    const btn = document.getElementById('bzSigninSubmit');
+    const errBox = document.getElementById('bzSigninError');
+    errBox.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Signing in…';
+    try {
+      const res = await fetch('/api/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+      bzBody.innerHTML = `
+        <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#F59B20,#CC3701);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin-bottom:16px">✓</div>
+        <h3 style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;letter-spacing:-.02em;margin-bottom:10px">Welcome back!</h3>
+        <p style="font-size:15px;line-height:1.55;color:#3A2E22">${data.message}</p>
+        <button onclick="closeModal()" style="margin-top:20px;width:100%;background:#1C120C;color:#fff;padding:12px;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:'Hanken Grotesk'">Close</button>
+      `;
+    } catch (err) {
+      errBox.textContent = err.message;
+      errBox.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Sign in';
+    }
+  };
+
+  window.showDemo = function (event) {
+    if (event) event.preventDefault();
+    bzBody.innerHTML = `
+      <div style="width:46px;height:46px;border-radius:50%;background:rgba(204,55,1,.1);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px">🥨</div>
+      <h3 style="font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;letter-spacing:-.02em;margin-bottom:10px">Demo coming soon</h3>
+      <p style="font-size:15px;line-height:1.55;color:#3A2E22">We're still baking this one. Stay tuned!</p>
+      <button onclick="closeModal()" style="margin-top:20px;width:100%;background:#1C120C;color:#fff;padding:12px;border:none;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:'Hanken Grotesk'">Close</button>
+    `;
+    bzOverlay.style.display = 'flex';
+  };
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+  </script>
+</body>
+</html>
