@@ -1,0 +1,20 @@
+# Dependencies — reinstalled from package-lock.json, never committed.
+node_modules/
+
+# Build output — produced by `npm run build`, generated in CI on deploy.
+dist/
+tsconfig.tsbuildinfo
+
+# Local env overrides. .env.example is committed; real values are not.
+.env
+.env.local
+.env.*.local
+
+# A separate clone of this same repo that lives inside the project folder.
+# Nested git repos get committed as unusable gitlinks — keep it out of the index.
+brezel/
+
+# macOS / editor noise
+.DS_Store
+*.log
+.claude/settings.local.json
