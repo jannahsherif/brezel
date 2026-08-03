@@ -1,0 +1,13 @@
+name = "brezel-landing"
+main = "worker/index.ts"
+compatibility_date = "2026-05-01"
+
+# Deliberately no public URL and no custom domain. brezel.cc belongs to the brezel-app
+# Worker in the private repo, which reaches this one over a service binding. If this
+# Worker were publicly routable, the gate in front of the prototype could be walked around.
+workers_dev = false
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"

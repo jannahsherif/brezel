@@ -1,12 +1,14 @@
 /**
  * Where the "Access prototype" buttons send people.
  *
- * Set `VITE_PROTOTYPE_URL` at build time to point at the deployed P0 prototype — Vite inlines it,
- * so switching environments never needs a code change:
+ * The landing page and the prototype share one origin — brezel.cc serves this page at /,
+ * and the front-door Worker in the (private) prototype repo owns /login and /app. So this
+ * is a plain same-origin path, not a cross-domain URL: no env var, no build-time config.
  *
- *   VITE_PROTOTYPE_URL=https://prototype.brezel.cc npm run build
+ * The gate itself lives at /login. Nothing here decides who gets in.
  *
- * The fallback is the prototype's own dev server (Prototype/vite.config.ts pins 5180), so a local
- * checkout of both projects works with no configuration at all.
+ * Locally the two projects run on separate Vite ports, so `npm run dev` on this page will
+ * 404 on /login. Use `npm run preview:worker` in the prototype repo to exercise the real
+ * routing, which serves both halves on one port exactly as production does.
  */
-export const PROTOTYPE_URL = import.meta.env.VITE_PROTOTYPE_URL || 'http://localhost:5180'
+export const PROTOTYPE_URL = '/login'
