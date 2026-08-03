@@ -1,0 +1,4 @@
+# Brezel is pre-launch. This carries over the block from the previous site —
+# flip Disallow to Allow on launch day, before any announcement goes out.
+User-agent: *
+Disallow: /
